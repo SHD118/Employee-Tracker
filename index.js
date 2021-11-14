@@ -40,28 +40,28 @@ function promptUser() {
     ]).then((selectedOption) => {
         switch (selectedOption.displayChoices) {
             case "view all departments":
-                "call function to query"
+                viewDepartments()
                 break;
             case "view all roles":
-                "call function to query"
+                viewRoles()
                 break;
             case "view all employees":
-                "call function to query"
+                viewEmployees()
                 break;
             case "add a department":
-                "call function to query"
+                addDepartment()
                 break;
             case "add a role":
-                "call function to query"
+                addRole()
                 break;
             case "add an employee":
-                "call function to query"
+                addEmployee()
                 break;
-                case "update an employee role":
-                    "call function to query"
+            case "update an employee role":
+                updateEmployeeRole()
                 break;
             default:
-                console.log("your exiting");
+                console.log("you are exiting");
                 break;
         }
     })
@@ -72,23 +72,35 @@ function promptUser() {
 //function will need to query based of option literal
 
 function viewDepartments() {
-    
+    db.query('SELECT * FROM company_db.department;', function (err, results) {
+        console.log(results)
+        promptUser()
+    })
 }
 function viewRoles() {
-    
+    db.query('select role.title, role.id, role.salary, department.name from department RIGHT JOIN role on department.id = role.department_id;'
+        , function (err, results) {
+            console.log(results)
+            promptUser()
+        })
 }
 function viewEmployees() {
-    
+    // finish manager part of query
+    db.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id JOIN department ON role.department_id = department.id;'
+    , function (err, results) {
+        console.log(results)
+        promptUser()
+    })
 }
 function addDepartment() {
-    
+
 }
 function addRole() {
-    
+
 }
 function addEmployee() {
-    
+
 }
 function updateEmployeeRole() {
-    
+
 }
