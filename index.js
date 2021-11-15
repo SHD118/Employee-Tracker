@@ -26,7 +26,7 @@ db.connect((err) => {
     }
 });
 //inqurir
-
+promptUser()
 function promptUser() {
     return inquirer.prompt([
         {
@@ -71,31 +71,82 @@ function promptUser() {
 //Write a function for each case statement
 //function will need to query based of option literal
 
+
+// VIEW
 function viewDepartments() {
     db.query('SELECT * FROM company_db.department;', function (err, results) {
-        console.log(results)
+        console.table(results)
         promptUser()
     })
 }
 function viewRoles() {
     db.query('select role.title, role.id, role.salary, department.name from department RIGHT JOIN role on department.id = role.department_id;'
         , function (err, results) {
-            console.log(results)
+            console.table(results)
             promptUser()
         })
 }
 function viewEmployees() {
     // finish manager part of query
-    db.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id JOIN department ON role.department_id = department.id;'
+    db.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT (manager_name.first_name, " ", manager_name.last_name) AS manager_name FROM employee
+    Join employee manager_name on employee.manager_id = manager_name.id
+    JOIN role ON employee.role_id = role.id
+     JOIN department ON role.department_id = department.id;
+   `
     , function (err, results) {
-        console.log(results)
+        console.table(results)
         promptUser()
     })
 }
+
+// ADD
 function addDepartment() {
+    
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "departmentName",
+            message: "Please enter a department name"
+        }
+    ]).then((results) => {
+
+  
+        db.query(` INSERT INTO department set name = ("${results.departmentName}") ;`
+            , function (err, results) {
+                viewDepartments() 
+                promptUser()
+            })
+    }
+    )
 
 }
 function addRole() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "roleName",
+            message: "Please enter a role namee"
+        },
+        {
+            type: "input",
+            name: "roleSalary",
+            message: "Please enter a department roleSalary"
+        },
+        {
+            type: "input",
+            name: "roleDepartment",
+            message: "Please enter a department roleDepartment"
+        }
+    ]).then((results) => {
+
+  
+        db.query(` `
+            , function (err, results) {
+                viewRoles() 
+                promptUser()
+            })
+    }
+    )
 
 }
 function addEmployee() {
