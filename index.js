@@ -93,15 +93,15 @@ function viewEmployees() {
     JOIN role ON employee.role_id = role.id
      JOIN department ON role.department_id = department.id;
    `
-    , function (err, results) {
-        console.table(results)
-        promptUser()
-    })
+        , function (err, results) {
+            console.table(results)
+            promptUser()
+        })
 }
 
 // ADD
 function addDepartment() {
-    
+
     return inquirer.prompt([
         {
             type: "input",
@@ -110,52 +110,58 @@ function addDepartment() {
         }
     ]).then((results) => {
 
-  
+
         db.query(` INSERT INTO department set name = ("${results.departmentName}") ;`
             , function (err, results) {
-                viewDepartments() 
+                viewDepartments()
                 promptUser()
             })
     }
     )
 
 }
+
+
+
 function addRole() {
-    let departArr = [];
+
     db.query(`SELECT * FROM department;`
         , function (err, results) {
-           
-            results.forEach(result => departArr.push({ name: results.name, value: results.id }))
-    })
-  
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "roleName",
-            message: "Please enter a role namee"
-        },
-        {
-            type: "input",
-            name: "roleSalary",
-            message: "Please enter a role Salary"
-        },
-        {
-            type: "list",
-            name: "roleDepartment",
-            choices: departArr,
-            message: "Please enter a department roleDepartment"
-        }
-    ]).then((results) => {
+            let departArr = [];
+            // console.table(results)
+            results.forEach(result => departArr.push({ name: result.name, value: result.id }))
+            // console.log(departArr)
 
-  
-        db.query(`INSERT INTO department set company_db.role.title =  ${roleName}, company_db.role.salary = ${roleSalary}, company_db.role.department_id = ${roleDepartment} `
-            , function (err, results) {
-                viewRoles() 
+
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    name: "roleName",
+                    message: "Please enter a role namee"
+                },
+                {
+                    type: "input",
+                    name: "roleSalary",
+                    message: "Please enter a role Salary"
+                },
+                {
+                    type: "list",
+                    name: "roleDepartment",
+                    choices: departArr,
+                    message: "Please enter a department roleDepartment"
+                }
+            ]).then((results) => {
+
+
+                db.query(`INSERT INTO department set company_db.role.title = ${results.roleName}, company_db.role.salary = ${results.roleSalary}, company_db.role.department_id = ${results.roleDepartment} `
+                    , function (err, results) {
+                        console.log(err);
+
+                    })
+                viewRoles()
                 promptUser()
             })
-        
-    }
-    )
+        })
 
 }
 function addEmployee() {
