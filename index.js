@@ -165,8 +165,52 @@ function addRole() {
 
 }
 function addEmployee() {
-
+    db.query(`Select * From Employee;`, function (err, results) {
+        return inquirer.prompt([
+            {
+                type: "input",
+                name: "employeeFName",
+                message: "Please enter the employees first name"
+            },
+            {
+                type: "input",
+                name: "employeeLName",
+                message: "Please enter the employees last name"
+            },
+            {
+                type: "input",
+                name: "employeeRole",
+                message: "Please enter a role for the employee"
+            }
+        ]).then((results) => {
+            var empLN = results.last_name;
+            var empFN = results.first_name;
+            var empRoleID = results.role_id;
+            
+            db.query(`select * from employee where manager_id is null;`, function (err, results) {
+                var employeeArr = [];
+                results.forEach(result => employeeArr.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
+                return inquirer.prompt([
+                    {
+                      type: "list",
+                      name: "employeeManager",
+                      message: "Who is the employee's manager?",
+                      choices: employeeArr
+                    },
+                ]).then((data) => {
+                    db.query(`INSERT INTO employee set company_db.employee.first_name = ${empFN}, company_db.employee.last_name = ${empLN}, company_db.employee.role_id = ${empRoleID}, company_db.employee.manager_id = ${data.employeeManager}`, function (err, results) { // working, the placeholder needed to be in ()
+                        console.table(results);
+                        console.log(err);
+                      })
+                  })
+            })
+        })
+    })
 }
 function updateEmployeeRole() {
 
 }
+
+// WHEN I choose to add an employee
+// THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+ 
