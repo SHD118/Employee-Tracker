@@ -95,12 +95,7 @@ node index.js
 ## License
 Free Use
 ## Tests
-* Ensure jest is installed (npm install jest)
-* In the command line, write:
-```
-npm run test
-```
-* Confirm all four test suites pass (see screenshot below). Test suites are located in the test folder and are titled: Employee.test.js, Engineer.test.js, Intern.test.js, and Manager.test.js
+N/A
 ## Questions?
 Want to see more of my work? [Github Link](https://github.com/SHD118/Team-Profile)
 <br/>
