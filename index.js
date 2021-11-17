@@ -34,7 +34,7 @@ function promptUser() {
             type: "list",
             name: "displayChoices",
             message: "Please choose an option",
-            choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"]
+            choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "delete an employee", "delete a department"]
 
 
         }
@@ -60,6 +60,12 @@ function promptUser() {
                 break;
             case "update an employee role":
                 updateEmployeeRole()
+                break;
+            case "delete an employee":
+               deleteEmployee()
+                break;
+            case "delete a department":
+                deleteDepartment()
                 break;
             default:
                 console.log("you are exiting");
@@ -135,11 +141,7 @@ function addRole() {
     db.query(`SELECT * FROM department;`
         , function (err, results) {
             let departArr = [];
-            // console.table(results)
             results.forEach(result => departArr.push({ name: result.name, value: result.id }))
-            // console.log(departArr)
-
-
             return inquirer.prompt([
                 {
                     type: "input",
@@ -162,17 +164,19 @@ function addRole() {
 
                 db.query(`INSERT INTO department set company_db.role.title = ${results.roleName}, company_db.role.salary = ${results.roleSalary}, company_db.role.department_id = ${results.roleDepartment};`
                     , function (err, results) {
-                        if (err) throw new Error("query failure : " + err);
+                      viewRoles()
+                      promptUser()
+
 
                     })
-                viewRoles()
-                promptUser()
+                    if (err) throw new Error("query failure : ", err);
+
             })
         })
 
 }
 function addEmployee() {
-    db.query(`Select * From Employee;`, function (err, results) {
+    db.query(`Select * From company_db.employee ;`, function (err, results) {
         return inquirer.prompt([
             {
                 type: "input",
@@ -195,7 +199,7 @@ function addEmployee() {
             var empRoleID = results.employeeRole;
             console.log("sid")
             console.table(results);
-            db.query(`select * from employee where manager_id is null;`, function (err, results) {
+            db.query(`select * from company_db.employee where manager_id is null;`, function (err, results) {
                 var employeeArr = [];
                 results.forEach(result => employeeArr.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
                 return inquirer.prompt([
@@ -241,11 +245,8 @@ function updateEmployeeRole() {
             console.log("siddy", employeeList)
             console.log("siddy2", updateVal)
             console.log("siddy3", value.value)
-            db.query(`UPDATE company_db.employee set role_id = ${Number(updateVal)} where id = ${value.value} ;`, function (results, err) {
-                // if (err) throw new Error("query failure : " , err);
-
-
-
+            db.query(`UPDATE company_db.employee set role_id = ${Number(updateVal)} where id = ${employeeList} ;`, function (err, results ) {
+                if (err) throw new Error("query failure : " , err);
 
             })
             displayEmployeeTable();
@@ -269,32 +270,38 @@ function deleteDepartment() {
             },
         ]).then((data) => {
             db.query(`DELETE FROM department WHERE id = ${data.deleteDepartment};`, function (err, results) {
-                promptOptions();
+                promptUser()
             })
 
         })
     })
 };
-function deleteRole() {
+// function deleteRole() {
 
-}
+// }
 function deleteEmployee() {
-    b.query(`SELECT * FROM company_db.employee;`, function (err, results) {
+    console.log("hj")
+    db.query(`SELECT * FROM company_db.employee;`, function (err, results) {
         let empArray = [];
+        console.log("hj")
         results.forEach(result => empArray.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
+        
         return inquirer.prompt([
             {
                 type: "list",
                 name: "deleteEmployee",
                 message: "Please choice a employee to delete?",
-                choices: departArray
+                choices: empArray
             },
         ]).then((data) => {
-            db.query(`DELETE FROM department WHERE id = ${data.deleteEmployee};`, function (err, results) {
-                promptOptions();
+            console.log(`helk  , ${data.deleteEmployee}`)
+            db.query(`DELETE FROM company_db.employee WHERE id = ${data.deleteEmployee};`, function (err, results) {
+                promptUser()
             })
 
+           
         })
+          
     })
 
 }
