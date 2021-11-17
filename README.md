@@ -112,11 +112,8 @@ https://www.awesomescreenshot.com/video/5886615?key=8e58678b166e2cd4032ef5bbbd91
 ![](image/test.PNG)
 
 ## Links
-* https://shd118.github.io/Team-Profile/
-* https://github.com/SHD118/Team-Profile
+
 
 ## Resources
-* https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
-* https://fontawesome.com/v6.0/icons?q=gra&m=free
-* https://www.npmjs.com/package/inquirer
+
 
