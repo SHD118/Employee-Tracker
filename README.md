@@ -51,15 +51,29 @@ THEN I am prompted to select an employee to update and their new role and this i
 ## Installation
 * Clone the repository using:
 ```
-git@github.com:SHD118/Team-Profile.git
+git clone git@github.com:SHD118/Employee-Tracker.git
 ```
 * Ensure you are in the current working directory
-* Ensure all dependencies are installed (jest and inquirer) installation instructions are below:
+* Ensure all dependencies are installed as shown below installation instructions are below:
 ```
-npm install jest
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^10.0.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3-rc.0"
+  }
+}
+
 ```
 ```
-npm install inqurier
+npm install inquire
+````
+```
+npm install mysql2
+```
+```
+npm install dotenv
 ```
 
 Run the the best team profile generator by typing the following in the terminal:
