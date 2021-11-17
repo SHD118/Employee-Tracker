@@ -26,7 +26,7 @@ db.connect((err) => {
         throw error;
     }
 });
-//inqurir
+//inqurirer
 promptUser()
 function promptUser() {
     return inquirer.prompt([
@@ -34,7 +34,7 @@ function promptUser() {
             type: "list",
             name: "displayChoices",
             message: "Please choose an option",
-            choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "delete an employee", "delete a department"]
+            choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "delete an employee", "delete a department",  "delete a role", "view a deparment budget"]
 
 
         }
@@ -67,6 +67,11 @@ function promptUser() {
             case "delete a department":
                 deleteDepartment()
                 break;
+            case "delete a role":
+                deleteRole()
+                break;
+            case "view a deparment budget":
+                viewBudget()
             default:
                 console.log("you are exiting");
                 break;
@@ -75,8 +80,6 @@ function promptUser() {
 
 }
 
-//Write a function for each case statement
-//function will need to query based of option literal
 
 
 // VIEW
@@ -105,7 +108,29 @@ function viewEmployees() {
             promptUser()
         })
 }
-
+function viewBudget(){
+    db.query('SELECT * FROM company_db.department;', function (err, results) {
+      // console.table(results); //logs role table, id is referencing roles
+      let departmentList = [];
+    results.forEach(result => departmentList.push({name: result.name, value: result.id}));
+  
+        return inquirer.prompt([
+          {
+            type: "list",
+            name: "departList",
+            message: "Select a department's budget to view",
+            choices: departmentList
+          },
+        ])
+    .then((data) => {
+      let departmentIDList = data.departList;
+      db.query('SELECT SUM(role.salary) AS department_budget from employee JOIN role ON employee.role_id = role.id WHERE role.department_id = ?', [departmentIDList] , function (err, results) {
+        console.table(results)
+        promptUser();
+      })
+    })
+  })};
+ 
 // ADD
 function addDepartment() {
 
@@ -146,7 +171,7 @@ function addRole() {
                 {
                     type: "input",
                     name: "roleName",
-                    message: "Please enter a role namee"
+                    message: "Please enter a role name"
                 },
                 {
                     type: "input",
@@ -157,7 +182,7 @@ function addRole() {
                     type: "list",
                     name: "roleDepartment",
                     choices: departArr,
-                    message: "Please enter a department roleDepartment"
+                    message: "Please enter a department"
                 }
             ]).then((results) => {
 
@@ -222,6 +247,8 @@ function addEmployee() {
         })
     })
 }
+
+//Update
 employeeArr = [];
 function updateEmployeeRole() {
     db.query(`Select * From company_db.employee;`, function (err, results) {
@@ -256,7 +283,7 @@ function updateEmployeeRole() {
     })
 
 }
-
+//Delete
 function deleteDepartment() {
     db.query(`SELECT * FROM company_db.department;`, function (err, results) {
         let departArray = [];
@@ -276,14 +303,35 @@ function deleteDepartment() {
         })
     })
 };
-// function deleteRole() {
+function deleteRole() {
+    db.query(`SELECT * FROM company_db.role;`, function (err, results) {
+        let rolArray = [];
 
-// }
+        results.forEach(result => rolArray.push({ name: result.title , value: result.id }));
+        
+        return inquirer.prompt([
+            {
+                type: "list",
+                name: "deleteRole",
+                message: "Please choice a role to delete?",
+                choices: rolArray
+            },
+        ]).then((data) => {
+
+            db.query(`DELETE FROM company_db.role WHERE id = ${data.deleteRole};`, function (err, results) {
+                promptUser()
+            })
+
+           
+        })
+          
+    })
+}
 function deleteEmployee() {
-    console.log("hj")
+
     db.query(`SELECT * FROM company_db.employee;`, function (err, results) {
         let empArray = [];
-        console.log("hj")
+
         results.forEach(result => empArray.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
         
         return inquirer.prompt([
@@ -294,7 +342,7 @@ function deleteEmployee() {
                 choices: empArray
             },
         ]).then((data) => {
-            console.log(`helk  , ${data.deleteEmployee}`)
+         
             db.query(`DELETE FROM company_db.employee WHERE id = ${data.deleteEmployee};`, function (err, results) {
                 promptUser()
             })
@@ -305,5 +353,4 @@ function deleteEmployee() {
     })
 
 }
-// WHEN I choose to add an employee
-// THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+
