@@ -1,14 +1,14 @@
 # Employee-Tracker
 ### Siddharth Desai
 ## Description
-The purpose of this project was to create a command-line application to manage a company's database. The database consist of three tables role, employee and department (shown below). The user will be prompted with a series of option and dpending on their selection they will be able to view/write/delete to the database tables based one their selection. All the results will diplay on the users console. 
+The purpose of this project was to create a command-line application to manage a company's database. The database consist of three tables role, employee and department (shown below). The user will be prompted with a series of choices (shown below) and dpending on their selection they will be able to view/write/delete to the database tables based one their selection. All the results will diplay on the users console. 
 
 ```
 choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "delete an employee", "delete a department",  "delete a role", "view a deparment budgetment"]
 ```
-'''
+
 ![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
-'''
+
 <br/>
 ## User Story
 
