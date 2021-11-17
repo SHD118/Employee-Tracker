@@ -102,14 +102,12 @@ Want to see more of my work? [Github Link](https://github.com/SHD118/Team-Profil
 Want to learn more please contact me at shdesai118@gmail.com
 
 ## Video
-https://www.awesomescreenshot.com/video/5886615?key=8e58678b166e2cd4032ef5bbbd91e962
+https://www.awesomescreenshot.com/video/6057594?key=0b906fd55e89fad4549f742a94d6afe6
 
 ## Screenshots
-![](image/website.PNG)
-
-![](image/run.PNG)
-
-![](image/test.PNG)
+![](./Assets/role.png)
+![](./Assets/emp.png)
+![](./Assets/dep.PNG)
 
 ## Links
 
