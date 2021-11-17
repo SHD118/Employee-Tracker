@@ -1,3 +1,4 @@
+const { prompt } = require("inquirer");
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 require('dotenv').config()
@@ -120,6 +121,12 @@ function addDepartment() {
     )
 
 }
+function displayEmployeeTable() {
+    db.query('SELECT * FROM company_db.employee;', function (err, results) {
+        console.table(results)
+        promptUser()
+    })
+}
 
 
 
@@ -153,9 +160,9 @@ function addRole() {
             ]).then((results) => {
 
 
-                db.query(`INSERT INTO department set company_db.role.title = ${results.roleName}, company_db.role.salary = ${results.roleSalary}, company_db.role.department_id = ${results.roleDepartment} `
+                db.query(`INSERT INTO department set company_db.role.title = ${results.roleName}, company_db.role.salary = ${results.roleSalary}, company_db.role.department_id = ${results.roleDepartment};`
                     , function (err, results) {
-                        console.log(err);
+                        if (err) throw new Error("query failure : " + err);
 
                     })
                 viewRoles()
@@ -183,34 +190,113 @@ function addEmployee() {
                 message: "Please enter a role for the employee"
             }
         ]).then((results) => {
-            var empLN = results.last_name;
-            var empFN = results.first_name;
-            var empRoleID = results.role_id;
-            
+            var empLN = results.employeeLName;
+            var empFN = results.employeeFName;
+            var empRoleID = results.employeeRole;
+            console.log("sid")
+            console.table(results);
             db.query(`select * from employee where manager_id is null;`, function (err, results) {
                 var employeeArr = [];
                 results.forEach(result => employeeArr.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
                 return inquirer.prompt([
                     {
-                      type: "list",
-                      name: "employeeManager",
-                      message: "Who is the employee's manager?",
-                      choices: employeeArr
+                        type: "list",
+                        name: "employeeManager",
+                        message: "Who is the employee's manager?",
+                        choices: employeeArr
                     },
                 ]).then((data) => {
-                    db.query(`INSERT INTO employee set company_db.employee.first_name = ${empFN}, company_db.employee.last_name = ${empLN}, company_db.employee.role_id = ${empRoleID}, company_db.employee.manager_id = ${data.employeeManager}`, function (err, results) { // working, the placeholder needed to be in ()
-                        console.table(results);
-                        console.log(err);
-                      })
-                  })
+                    db.query(`INSERT  INTO company_db.employee (company_db.employee.first_name, company_db.employee.last_name, company_db.employee.role_id, company_db.employee.manager_id) Values("${empFN}", "${empLN}",${empRoleID}, ${data.employeeManager})`, function (err, results) { // working, the placeholder needed to be in ()
+                        if (err) throw new Error("query failure : ", err);
+
+                    })
+                    viewEmployees();
+                    promptUser()
+
+                })
             })
         })
     })
 }
+employeeArr = [];
 function updateEmployeeRole() {
+    db.query(`Select * From company_db.employee;`, function (err, results) {
+
+        results.forEach(result => employeeArr.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
+        return inquirer.prompt([
+            {
+                type: "list",
+                name: "employeeList",
+                choices: employeeArr,
+                message: "Please select an employee to update"
+            },
+            {
+                type: "input",
+                name: "updateVal",
+                message: "Please enter a role number"
+            }
+        ]).then((data) => {
+            var { employeeList, updateVal } = data
+            var [value] = employeeArr;
+            console.log("siddy", employeeList)
+            console.log("siddy2", updateVal)
+            console.log("siddy3", value.value)
+            db.query(`UPDATE company_db.employee set role_id = ${Number(updateVal)} where id = ${value.value} ;`, function (results, err) {
+                // if (err) throw new Error("query failure : " , err);
+
+
+
+
+            })
+            displayEmployeeTable();
+
+        })
+
+    })
 
 }
 
+function deleteDepartment() {
+    db.query(`SELECT * FROM company_db.department;`, function (err, results) {
+        let departArray = [];
+        results.forEach(result => departArray.push({ name: result.name, value: result.id }));
+        return inquirer.prompt([
+            {
+                type: "list",
+                name: "deleteDepartment",
+                message: "Please choice a department to delete?",
+                choices: departArray
+            },
+        ]).then((data) => {
+            db.query(`DELETE FROM department WHERE id = ${data.deleteDepartment};`, function (err, results) {
+                promptOptions();
+            })
+
+        })
+    })
+};
+function deleteRole() {
+
+}
+function deleteEmployee() {
+    b.query(`SELECT * FROM company_db.employee;`, function (err, results) {
+        let empArray = [];
+        results.forEach(result => empArray.push({ name: result.first_name + ' ' + result.last_name, value: result.id }));
+        return inquirer.prompt([
+            {
+                type: "list",
+                name: "deleteEmployee",
+                message: "Please choice a employee to delete?",
+                choices: departArray
+            },
+        ]).then((data) => {
+            db.query(`DELETE FROM department WHERE id = ${data.deleteEmployee};`, function (err, results) {
+                promptOptions();
+            })
+
+        })
+    })
+
+}
 // WHEN I choose to add an employee
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
- 
