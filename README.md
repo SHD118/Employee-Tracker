@@ -6,6 +6,9 @@ The purpose of this project was to create a command-line application to manage a
 ```
 choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "delete an employee", "delete a department",  "delete a role", "view a deparment budgetment"]
 ```
+'''
+![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
+'''
 <br/>
 ## User Story
 
