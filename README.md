@@ -83,7 +83,7 @@ npm install dotenv
 ```
 mysql -u root -p
 ```
-After enter password run the below command to initiliaze the database
+* After enter password run the below command to initiliaze the database
 ```
 SOURCE schema.sql || SOURCE seeds.sql
 ```
