@@ -105,8 +105,8 @@ Want to learn more please contact me at shdesai118@gmail.com
 https://www.awesomescreenshot.com/video/6057594?key=0b906fd55e89fad4549f742a94d6afe6
 
 ## Screenshots
-![](./Assets/role.png)
-![](./Assets/emp.png)
+![](./Assets/role.PNG)
+![](./Assets/emp.PNG)
 ![](./Assets/dep.PNG)
 
 ## Links
