@@ -48,7 +48,10 @@ THEN I am prompted to select an employee to update and their new role and this i
 4. [ License. ](#license)
 6. [ Tests. ](#tests)
 7. [ Questions. ](#questions)
-7. [ Resources. ](#resources)
+8. [ Video. ](#video)
+9. [ Screenshots. ](#screenshots)
+10. [ Links. ](#links)
+11. [ Resources. ](#resources)
 ## Installation
 * Clone the repository using:
 ```
