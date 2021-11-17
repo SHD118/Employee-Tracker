@@ -117,5 +117,7 @@ https://www.awesomescreenshot.com/video/6057594?key=0b906fd55e89fad4549f742a94d6
 
 
 ## Resources
-
-
+* https://www.npmjs.com/package/inquirer
+* https://www.mysql.com/
+* https://www.npmjs.com/package/dotenv
+* https://www.w3schools.com/sql/
