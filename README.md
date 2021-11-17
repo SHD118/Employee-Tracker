@@ -10,6 +10,7 @@ choices: ["view all departments", "view all roles", "view all employees", "add a
 ![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
 
 <br/>
+
 ## User Story
 
 ```md
