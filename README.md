@@ -66,6 +66,7 @@ git clone git@github.com:SHD118/Employee-Tracker.git
 }
 
 ```
+Run the below commands to install any missing dependencies
 ```
 npm install inquire
 ````
@@ -76,17 +77,21 @@ npm install mysql2
 npm install dotenv
 ```
 
-Run the the best team profile generator by typing the following in the terminal:
+## Usage
+* Ensure all depencies and above steps are fulfilled 
+* Navigate to the working directory and open a terminal and run the below command
+```
+mysql -u root -p
+```
+After enter password run the below command to initiliaze the database
+```
+SOURCE schema.sql || SOURCE seeds.sql
+```
+* Lastly start the application with the below command:
 ```
 node index.js
 ```
-## Usage
-* Naviagte to the project directory in a integrated terminal
-* Run the index.js (node index.js)
-* Answer all the prompted questions in the terminal 
-* Once "Finished building the Team" and index.html page will generate.
-* To View right click the index.html file and open it in a broswer of your choice
-* You have successfully generated and are now able to view your team profile
+
 ## License
 Free Use
 ## Tests
